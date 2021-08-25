@@ -1,23 +1,23 @@
 const assert = require('assert');
 const Train = require('./Train');
 
-describe('Should do the thing', function() {
-    it('should print out passenger train', function() {
-	  const train = new Train("HPP");
-	  assert.deepStrictEqual("<HHHH::|OOOO|::|OOOO|", train.print())
+describe('Train Task Test', function() {
+    it('Should print out passenger train', function() {
+		const train = new Train("HPP");
+		assert.deepStrictEqual("<HHHH::|OOOO|::|OOOO|", train.print())
     });
 
-	it('should print out restaurant train', function() {
+	it('Should print out restaurant train', function() {
 		const train = new Train("HPRP");
 		assert.deepStrictEqual("<HHHH::|OOOO|::|hThT|::|OOOO|", train.print())
-	  });
+	});
 
-	it('should print out double headed train', function() {
+	it('Should print out double headed train', function() {
 		const train = new Train("HPRPH");
 		assert.deepStrictEqual("<HHHH::|OOOO|::|hThT|::|OOOO|::HHHH>", train.print())
 	});
 
-	it('should correctly modify train', function() {
+	it('Should correctly modify train', function() {
 		const train = new Train("HPRPH");
 		train.detachEnd();
 		assert.deepStrictEqual("<HHHH::|OOOO|::|hThT|::|OOOO|", train.print());
@@ -25,7 +25,7 @@ describe('Should do the thing', function() {
 		assert.deepStrictEqual("|OOOO|::|hThT|::|OOOO|", train.print());
 	});
 
-	it('should do cargo train', function() {
+	it('Should throw error when filling an already full cargo train', function() {
 		const train = new Train("HCCC");
 		assert.deepStrictEqual("<HHHH::|____|::|____|::|____|", train.print());
 		train.fill();
@@ -43,7 +43,7 @@ describe('Should do the thing', function() {
 		}
 	});
 
-	it('should do mixed train', function() {
+	it('Should throw error when filling an already full mixed train', function() {
 		const train = new Train("HPCPC");
 		assert.deepStrictEqual("<HHHH::|OOOO|::|____|::|OOOO|::|____|", train.print());
 		train.fill();
@@ -58,5 +58,4 @@ describe('Should do the thing', function() {
 			assert.deepStrictEqual(err.message, "Train is already full")
 		}
 	});
-
 })
