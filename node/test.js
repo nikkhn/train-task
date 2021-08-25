@@ -3,14 +3,14 @@ const Train = require('./Train');
 
 describe('Train Task Test', function() {
     it('Should print out passenger train', function() {
-	  const train = new Train("HPP");
-	  assert.deepStrictEqual("<HHHH::|OOOO|::|OOOO|", train.print())
+		const train = new Train("HPP");
+		assert.deepStrictEqual("<HHHH::|OOOO|::|OOOO|", train.print())
     });
 
 	it('Should print out restaurant train', function() {
 		const train = new Train("HPRP");
 		assert.deepStrictEqual("<HHHH::|OOOO|::|hThT|::|OOOO|", train.print())
-	  });
+	});
 
 	it('Should print out double headed train', function() {
 		const train = new Train("HPRPH");
