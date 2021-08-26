@@ -2,111 +2,69 @@ package main
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestPassengerTrain(t *testing.T) {
 	var train = &Train{"HPP"}
-	expected := "<HHHH::|OOOO|::|OOOO|"
-	actual := train.print()
-	if expected != actual {
-		t.Errorf("Expected: %s Actual: %s", expected, actual)
-	}
+	assert.Equal(t, "<HHHH::|OOOO|::|OOOO|", train.Print(), "Train output should match expected")
+
 }
 
 func TestRestaurantTrain(t *testing.T) {
 	var train = &Train{"HPRP"}
-	expected := "<HHHH::|OOOO|::|hThT|::|OOOO|"
-	actual := train.print()
-	if expected != actual {
-		t.Errorf("Expected: %s Actual: %s", expected, actual)
-	}
+	assert.Equal(t, "<HHHH::|OOOO|::|hThT|::|OOOO|", train.Print(), "Train output should match expected")
 }
 
 func TestDoubleHeadedTrain(t *testing.T) {
 	var train = &Train{"HPRPH"}
-	expected := "<HHHH::|OOOO|::|hThT|::|OOOO|::HHHH>"
-	actual := train.print()
-	if expected != actual {
-		t.Errorf("Expected: %s Actual: %s", expected, actual)
-	}
+	assert.Equal(t, "<HHHH::|OOOO|::|hThT|::|OOOO|::HHHH>", train.Print(), "Train output should match expected")
+
 }
 
-func TestDetachment(t *testing.T) {
+func TestModifyTrain(t *testing.T) {
 	var train = &Train{"HPRPH"}
+	train.DetachEnd()
+	assert.Equal(t, "<HHHH::|OOOO|::|hThT|::|OOOO|", train.Print(), "Train output should match expected")
 
-	train.detachEnd()
-	expectedPostEndDetach := "<HHHH::|OOOO|::|hThT|::|OOOO|::HHHH>"
-	actualPostEndDetach := train.print()
-	if expectedPostEndDetach != actualPostEndDetach {
-		t.Errorf("Expected: %s Actual: %s", expectedPostEndDetach, actualPostEndDetach)
-	}
+	train.DetachHead()
+	assert.Equal(t, "|OOOO|::|hThT|::|OOOO|", train.Print(), "Train output should match expected")
 
-	train.detachHead()
-	expectedPostHeadDetach := "|OOOO|::|hThT|::|OOOO|"
-	actualPostHeadDetach := train.print()
-	if expectedPostHeadDetach != actualPostHeadDetach {
-		t.Errorf("Expected: %s Actual: %s", expectedPostHeadDetach, actualPostHeadDetach)
-	}
 }
 
-func TestErrorOnFullCargoTrain(t *testing.T) {
-	var train = &Train{"HPRPH"}
-	expectedInitial := "<HHHH::|____|::|____|::|____|"
-	actualInitial := train.print()
-	if expectedInitial != actualInitial {
-		t.Errorf("Expected: %s Actual: %s", expectedInitial, actualInitial)
-	}
+func TestCargoTrain(t *testing.T) {
+	var train = &Train{"HCCC"}
+	require.Equal(t, "<HHHH::|____|::|____|::|____|", train.Print(), "Train output should match expected")
 
-	train.fill()
-	expectedFirstFill := "<HHHH::|^^^^|::|____|::|____|"
-	actualFirstFill := train.print()
-	if expectedFirstFill != actualFirstFill {
-		t.Errorf("Expected: %s Actual: %s", expectedFirstFill, actualFirstFill)
-	}
+	train.Fill()
+	require.Equal(t, "<HHHH::|^^^^|::|____|::|____|", train.Print(), "Train output should match expected")
 
-	train.fill()
-	expectedSecondFill := "<HHHH::|^^^^|::|^^^^|::|____|"
-	actualSecondFill := train.print()
-	if expectedSecondFill != actualSecondFill {
-		t.Errorf("Expected: %s Actual: %s", expectedSecondFill, actualSecondFill)
-	}
+	train.Fill()
+	require.Equal(t, "<HHHH::|^^^^|::|^^^^|::|____|", train.Print(), "Train output should match expected")
 
-	train.fill()
-	expectedThirdFill := "<HHHH::|^^^^|::|^^^^|::|^^^^|"
-	actualThirdFill := train.print()
-	if expectedThirdFill != actualThirdFill {
-		t.Errorf("Expected: %s Actual: %s", expectedThirdFill, actualThirdFill)
-	}
+	train.Fill()
+	require.Equal(t, "<HHHH::|^^^^|::|^^^^|::|^^^^|", train.Print(), "Train output should match expected")
 
-	_, err := train.fill()
+	_, err := train.Fill()
 	if err == nil {
 		t.Errorf("Filling a train that is already full should return an error")
 	}
 }
 
-func TestErrorOnFullMixedTrain(t *testing.T) {
+func TestMixedTrain(t *testing.T) {
 	var train = &Train{"HPCPC"}
-	expectedInitial := "<HHHH::|OOOO|::|____|::|OOOO|::|____|"
-	actualInitial := train.print()
-	if expectedInitial != actualInitial {
-		t.Errorf("Expected: %s Actual: %s", expectedInitial, actualInitial)
-	}
+	require.Equal(t, "<HHHH::|OOOO|::|____|::|OOOO|::|____|", train.Print(), "Train output should match expected")
 
-	train.fill()
-	expectedFirstFill := "<HHHH::|OOOO|::|^^^^|::|OOOO|::|____|"
-	actualFirstFill := train.print()
-	if expectedFirstFill != actualFirstFill {
-		t.Errorf("Expected: %s Actual: %s", expectedFirstFill, actualFirstFill)
-	}
+	train.Fill()
+	require.Equal(t, "<HHHH::|OOOO|::|^^^^|::|OOOO|::|____|", train.Print(), "Train output should match expected")
 
-	train.fill()
-	expectedSecondFill := "<HHHH::|OOOO|::|^^^^|::|OOOO|::|^^^^|"
-	actualSecondFill := train.print()
-	if expectedSecondFill != actualSecondFill {
-		t.Errorf("Expected: %s Actual: %s", expectedSecondFill, actualSecondFill)
-	}
+	train.Fill()
 
-	_, err := train.fill()
+	require.Equal(t, "<HHHH::|OOOO|::|^^^^|::|OOOO|::|^^^^|", train.Print(), "Train output should match expected")
+
+	_, err := train.Fill()
 	if err == nil {
 		t.Errorf("Filling a train that is already full should return an error")
 	}
