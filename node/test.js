@@ -17,7 +17,7 @@ describe('Train Task Test', function() {
 		assert.deepStrictEqual("<HHHH::|OOOO|::|hThT|::|OOOO|::HHHH>", train.print())
 	});
 
-	it('Should correctly modify train', function() {
+	it('Should correctly detach parts of train', function() {
 		const train = new Train("HPRPH");
 		train.detachEnd();
 		assert.deepStrictEqual("<HHHH::|OOOO|::|hThT|::|OOOO|", train.print());
